@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
   return res.status(StatusCodes.OK).send('Olá Dev!')
 })
 
-router.post('/citys', CidadeController.create)
+router.post('/citys', CidadeController.createValidation , CidadeController.create)
 
 
 
