@@ -11,7 +11,7 @@ type Tvalidation = (schemas: Partial<TALLSchemas>) => RequestHandler
 
 export const validation: Tvalidation = (schemas) => async (req, res, next) => {
 
-  const errosResult: Record<string, Record<string, string>> = {}
+  const errors: Record<string, Record<string, string>> = {}
 
   Object.entries(schemas).forEach(([key, schema]) => {
 
@@ -21,21 +21,21 @@ export const validation: Tvalidation = (schemas) => async (req, res, next) => {
         
      } catch (err) {
        const yupError = err as ValidationError
-       const errors: Record<string, string> = {}
+       const errosResult: Record<string, string> = {}
        
        yupError.inner.forEach(error => {
          if(!error.path) return
-         errors[error.path] = error.message
+         errosResult[error.path] = error.message
        })
 
-       errosResult[key] = errors
+       errors[key] = errosResult
       
       }
     })
     
-    if(Object.entries(errosResult).length === 0) {
+    if(Object.entries(errors).length === 0) {
       return next()  
     } else {
-      return res.status(StatusCodes.BAD_REQUEST).json({ errosResult })
+      return res.status(StatusCodes.BAD_REQUEST).json({ errors })
     }
 }
