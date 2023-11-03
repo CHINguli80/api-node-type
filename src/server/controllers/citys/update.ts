@@ -2,15 +2,14 @@ import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
 import { validation } from '../../shared/middlewares'
+import { ICity } from '../../database/models'
 
 
 interface IParamsProps {
   id?: number,
 }
 
-interface IBodyprops {
-  name: string
-}
+interface IBodyprops extends Omit<ICity, 'id'> {}
 
 const IdProps: yup.ObjectSchema<IParamsProps> = yup.object().shape({
   id: yup.number().integer().required().moreThan(0)
