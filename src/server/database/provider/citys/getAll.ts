@@ -6,7 +6,7 @@ import { ICity } from '../../models'
 export const getAll = async (page: number, limit: number, filter: string, id: Number): Promise<ICity[] | Error> => {
   try {
     const result = await Knex(ETableNames.citys).select('*')
-    .where('id', Number(id))
+    .where('id', '=', id)
     .orWhere('name', 'like', `%${filter}%`)
     .offset((page -1) * limit).limit(limit)
     
